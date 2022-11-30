@@ -33,9 +33,10 @@ while(True):
             ret, frame = vids[ID].read();
             
             cv2.imshow('frame'+str(Sources[ID]), frame);
-            if(blocks[ID].AnalyzeNewFrame(frame)):
-                lib.SaveFrame(frame,count,ID);
+            if(blocks[ID].AnalyzeNewFrame(frame,Umbral=25)):
+                img_name=lib.SaveFrame(frame,count,ID);
                 state=True;
+                print("Image",img_name,"saved")
         else:
             exit();
     

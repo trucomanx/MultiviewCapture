@@ -22,7 +22,7 @@ def GetVideoIDs(Sources):
     return vids;
     
 def SaveFrame(frame,count,ID):
-    img_name = "opencv_frame_"+str(count)+"_"+str(ID)+".png";
+    img_name = "frame_count"+str(count)+"_cam"+str(ID)+".png";
     
     cv2.imwrite(img_name, frame);
-    return count;    
+    return img_name;    
