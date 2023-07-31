@@ -13,11 +13,13 @@ def face_extrator_mediapipe(face_detection,frame0):
     import mediapipe as mp
     results = face_detection.process(cv2.cvtColor(frame0, cv2.COLOR_BGR2RGB))
     if results.detections:
-        annotated_image = frame0.copy()
         for detection in results.detections:
+            #print("detection",detection)
             height,width,dim=frame0.shape;
             x0=int(detection.location_data.relative_bounding_box.xmin*width);
+            x0=max(x0, 0);x0=min(x0, frame0.shape[1]);
             y0=int(detection.location_data.relative_bounding_box.ymin*height);
+            y0=max(y0, 0);x0=min(y0, frame0.shape[0]);
             dx=int(detection.location_data.relative_bounding_box.width*width);
             dy=int(detection.location_data.relative_bounding_box.height*height);
             frame0=frame0[y0:(y0+dy), x0:(x0+dx)];
@@ -92,7 +94,7 @@ class FramesAnalizer:
                 disp_frame = np.uint8(255.0*frame_diff/float(frame_diff.max()))
                 umbral=disp_frame.mean();
                 #cv2.imwrite("face"+str(time.time_ns())+"-equ.png", frame0);
-                #print(disp_frame.shape,umbral)
+                #print("Umbral:",umbral)
                 if umbral>Umbral:
                     self.frame1=frame0;
                     return True;

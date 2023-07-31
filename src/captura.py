@@ -12,16 +12,7 @@ MaxNumOfImages=10;
 ############################################################################
 
 
-Sources=lib.GetSources(0,9);
-vids=lib.GetVideoIDs(Sources);
-
-vids=[];
-blocks = []
-for source in Sources:
-    # define a video capture object
-    vids.append(cv2.VideoCapture(source));
-    blocks.append(FA.FramesAnalizer());
-
+Sources, vids, blocks, frame, ret=lib.GetVideoDataAll(start_source=0,end_source=9);
 count=0;
 
 
@@ -30,12 +21,17 @@ while(True):
     state=False;
     for ID in range(len(vids)):
         if vids[ID].isOpened():
-            ret, frame = vids[ID].read();
-            
-            cv2.imshow('frame'+str(Sources[ID]), frame);
-            if(blocks[ID].AnalyzeNewFrame(frame,Umbral=25)):
-                img_name=lib.SaveFrame(frame,count,ID);
+            ret[ID], frame[ID] = vids[ID].read();
+            cv2.imshow('frame'+str(Sources[ID]), frame[ID]);
+            if(blocks[ID].AnalyzeNewFrame(frame[ID],Umbral=25)):
                 state=True;
+        else:
+            exit();
+            
+    for ID in range(len(vids)):
+        if vids[ID].isOpened():
+            if(state==True):
+                img_name=lib.SaveFrame(frame[ID],count,ID);
                 print("Image",img_name,"saved")
         else:
             exit();

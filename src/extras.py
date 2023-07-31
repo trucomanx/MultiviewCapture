@@ -20,6 +20,24 @@ def GetVideoIDs(Sources):
         # define a video capture object
         vids.append(cv2.VideoCapture(source));
     return vids;
+
+import FramesAnalizer as FA
+def GetVideoDataAll(start_source=0,end_source=9):
+    Sources=GetSources(start_source,end_source);
+    vids=[];
+    blocks = [];
+    frame  = [];
+    ret  = [];
+    if len(Sources)==0:
+        print("No sources found");
+        exit();
+    for source in Sources:
+        # define a video capture object
+        vids.append(cv2.VideoCapture(source));
+        blocks.append(FA.FramesAnalizer());
+        frame.append(None);
+        ret.append(None);
+    return Sources, vids, blocks, frame, ret;
     
 def SaveFrame(frame,count,ID):
     img_name = "frame_count"+str(count)+"_cam"+str(ID)+".png";
