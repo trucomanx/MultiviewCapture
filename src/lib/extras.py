@@ -1,3 +1,5 @@
+
+import os
 import cv2
 
 
@@ -39,8 +41,8 @@ def GetVideoDataAll(start_source=0,end_source=9):
         ret.append(None);
     return Sources, vids, blocks, frame, ret;
     
-def SaveFrame(frame,count,ID):
-    img_name = "frame_count"+str(count)+"_cam"+str(ID)+".png";
+def SaveFrame(frame,count,ID,Directory='./'):
+    img_name = os.path.join(Directory,"frame_count"+str(count)+"_cam"+str(ID)+".png");
     
     cv2.imwrite(img_name, frame);
     return img_name;    

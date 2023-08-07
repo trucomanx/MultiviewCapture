@@ -1,20 +1,24 @@
 # main.py
 from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QDir
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QSpinBox
 from PyQt5.QtWidgets import QProgressBar
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFrame
 
 import sys
 import time
 import worker
-
 
 
 class Form(QWidget):
@@ -23,9 +27,20 @@ class Form(QWidget):
         super().__init__()
         
         # window
-        self.setGeometry(0,0,160,120);
+        self.setGeometry(0,0,300,200);# width height
         self.setWindowTitle("Camera-Gui")
 
+        #label_numofimg
+        self.label_outdir=QLabel("Select the output directory:");
+        #lineedit_outdir
+        self.lineedit_outdir=QLineEdit(QDir.homePath()); 
+        #pushbutton_outdir
+        self.pushbutton_outdir=QPushButton("Select");
+        self.pushbutton_outdir.clicked.connect(self.on_select_outputdir)
+        #separatorline
+        self.separatorLine = QFrame()
+        self.separatorLine.setFrameShape( QFrame.HLine )
+        self.separatorLine.setFrameShadow( QFrame.Raised )
         #label_numofimg
         self.label_numofimg=QLabel("Max number of images:");
         #spin_numofimg
@@ -48,8 +63,16 @@ class Form(QWidget):
         self.progress_bar.setValue(0)
         self.progress_bar.setRange(0,self.spin_numofimg.value());
 
+        #HBox
+        self.hbox = QHBoxLayout();
+        self.hbox.addWidget(self.lineedit_outdir)
+        self.hbox.addWidget(self.pushbutton_outdir)
+
         #VBox
         self.vbox=QVBoxLayout();
+        self.vbox.addWidget(self.label_outdir)
+        self.vbox.addLayout(self.hbox)
+        self.vbox.addWidget(self.separatorLine)
         self.vbox.addWidget(self.label_numofimg)
         self.vbox.addWidget(self.spin_numofimg)
         self.vbox.addWidget(self.label_threshold)
@@ -64,7 +87,8 @@ class Form(QWidget):
 
         # 1 - create Worker and Thread inside the Form
         self.obj_worker = worker.Worker(self.spin_numofimg.value(),
-                                        self.spin_threshold.value()
+                                        self.spin_threshold.value(),
+                                        self.lineedit_outdir.text()
                                         );  # no parent!
         self.thread = QThread()  # no parent!
 
@@ -83,6 +107,11 @@ class Form(QWidget):
         # 7 - Start the form
         self.initUI()
         
+    #################################################
+    def on_select_outputdir(self):
+        folderpath = QFileDialog.getExistingDirectory(self,'Select Folder')
+        self.lineedit_outdir.setText(folderpath);
+        self.obj_worker.setOutputDir(folderpath);
     #################################################
 
     def initUI(self):

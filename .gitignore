@@ -1,14 +1,3 @@
-/src/__pycache__/FramesAnalizer.cpython-38.pyc
-/src/__pycache__/extras.cpython-38.pyc
-/src/opencv_frame_0_0.png
-/src/opencv_frame_10_0.png
-/src/opencv_frame_1_0.png
-/src/opencv_frame_2_0.png
-/src/opencv_frame_3_0.png
-/src/opencv_frame_4_0.png
-/src/opencv_frame_5_0.png
-/src/opencv_frame_6_0.png
-/src/opencv_frame_7_0.png
-/src/opencv_frame_8_0.png
-/src/opencv_frame_9_0.png
-/src/__pycache__/LibOpenCV.cpython-38.pyc
+src/__pycache__
+src/lib/__pycache__
+src/capture-gui/__pycache__

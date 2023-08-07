@@ -12,15 +12,19 @@ class Worker(QObject):
     finished = pyqtSignal()
     ProgressStep = pyqtSignal(int)
 
-    def __init__(self,Nel,Umbral):
+    def __init__(self,Nel,Umbral,Directory,start_source=0,end_source=9):
         super(Worker, self).__init__();
         self.cvobj=cvextra.OpenCvClass( count=0,
                                         MaxNumOfImages=Nel,
-                                        Umbral=Umbral);
+                                        Umbral=Umbral,
+                                        Directory=Directory);
+        self.start_source = start_source;
+        self.end_source   = end_source;
     
     @pyqtSlot()
     def procCounter(self): # A slot takes no params
-        self.cvobj.start_opencv();
+        # busca cameras de 0 a 9
+        self.cvobj.start_opencv(start_source=self.start_source,end_source=self.end_source,imshow=False);
         count=0;
         while True:
             if self.cvobj.count>count:
@@ -43,6 +47,9 @@ class Worker(QObject):
     
     def setMaxNumOfImages(self,Nel):
         self.cvobj.MaxNumOfImages=Nel;
+        
+    def setOutputDir(self,Directory):
+        self.cvobj.Directory=Directory;
         
     def getMaxNumOfImages(self):
         return self.cvobj.MaxNumOfImages;
