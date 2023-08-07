@@ -2,6 +2,9 @@
 
 
 import sys
+sys.path.append('../lib')
+
+
 import extras as lib
 import FramesAnalizer as FA
 
