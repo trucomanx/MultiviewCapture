@@ -37,10 +37,17 @@ class Form(QWidget):
         #pushbutton_outdir
         self.pushbutton_outdir=QPushButton("Select");
         self.pushbutton_outdir.clicked.connect(self.on_select_outputdir)
+        #label_sources
+        self.label_sources=QLabel("Sources 0 until :");
+        #spin_end
+        self.spin_endsource=QSpinBox();
+        self.spin_endsource.setRange(0,10);
+        self.spin_endsource.setValue(3);
+        self.spin_endsource.valueChanged.connect(self.on_spin_endsource_changed);
         #separatorline
-        self.separatorLine = QFrame()
-        self.separatorLine.setFrameShape( QFrame.HLine )
-        self.separatorLine.setFrameShadow( QFrame.Raised )
+        self.separatorLine1 = QFrame()
+        self.separatorLine1.setFrameShape( QFrame.HLine )
+        self.separatorLine1.setFrameShadow( QFrame.Raised )
         #label_numofimg
         self.label_numofimg=QLabel("Max number of images:");
         #spin_numofimg
@@ -63,16 +70,18 @@ class Form(QWidget):
         self.progress_bar.setValue(0)
         self.progress_bar.setRange(0,self.spin_numofimg.value());
 
-        #HBox
-        self.hbox = QHBoxLayout();
-        self.hbox.addWidget(self.lineedit_outdir)
-        self.hbox.addWidget(self.pushbutton_outdir)
+        #HBox1
+        self.hbox1 = QHBoxLayout();
+        self.hbox1.addWidget(self.lineedit_outdir)
+        self.hbox1.addWidget(self.pushbutton_outdir)
 
         #VBox
         self.vbox=QVBoxLayout();
         self.vbox.addWidget(self.label_outdir)
-        self.vbox.addLayout(self.hbox)
-        self.vbox.addWidget(self.separatorLine)
+        self.vbox.addLayout(self.hbox1)
+        self.vbox.addWidget(self.label_sources)
+        self.vbox.addWidget(self.spin_endsource)
+        self.vbox.addWidget(self.separatorLine1)
         self.vbox.addWidget(self.label_numofimg)
         self.vbox.addWidget(self.spin_numofimg)
         self.vbox.addWidget(self.label_threshold)
@@ -119,7 +128,11 @@ class Form(QWidget):
         self.show()
     
     ##################################
-
+    def on_spin_endsource_changed(self):
+        self.obj_worker.setEndSource(self.spin_endsource.value());
+        print("SpinButton endsource changed to",self.obj_worker.getEndSource());
+    
+    ##################################
     def on_spin_numofimg_changed(self):
         self.obj_worker.setMaxNumOfImages(self.spin_numofimg.value());
         self.progress_bar.setRange(0,self.spin_numofimg.value());

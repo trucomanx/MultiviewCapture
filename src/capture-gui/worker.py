@@ -45,14 +45,20 @@ class Worker(QObject):
         self.cvobj.count=0;
         print("self.cvobj.stop_opencv()");
     
+    def setEndSource(self,Nel):
+        self.end_source=Nel;
+        
+    def getEndSource(self):
+        return self.end_source;
+    
     def setMaxNumOfImages(self,Nel):
         self.cvobj.MaxNumOfImages=Nel;
         
-    def setOutputDir(self,Directory):
-        self.cvobj.Directory=Directory;
-        
     def getMaxNumOfImages(self):
         return self.cvobj.MaxNumOfImages;
+        
+    def setOutputDir(self,Directory):
+        self.cvobj.Directory=Directory;
         
     def setUmbral(self,Umbral):
         self.cvobj.Umbral=Umbral;
