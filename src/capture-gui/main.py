@@ -34,11 +34,17 @@ class Form(QWidget):
         self.label_outdir=QLabel("Select the output directory:");
         #lineedit_outdir
         self.lineedit_outdir=QLineEdit(QDir.homePath()); 
+        self.lineedit_outdir.textChanged.connect(self.on_lineedit_outdir_changed);
         #pushbutton_outdir
         self.pushbutton_outdir=QPushButton("Select");
         self.pushbutton_outdir.clicked.connect(self.on_select_outputdir)
         #label_sources
-        self.label_sources=QLabel("Sources 0 until :");
+        self.label_sources=QLabel("Searched sources:");
+        #spin_ini
+        self.spin_inisource=QSpinBox();
+        self.spin_inisource.setRange(0,10);
+        self.spin_inisource.setValue(0);
+        self.spin_inisource.valueChanged.connect(self.on_spin_inisource_changed);
         #spin_end
         self.spin_endsource=QSpinBox();
         self.spin_endsource.setRange(0,10);
@@ -60,7 +66,7 @@ class Form(QWidget):
         #spin_threshold
         self.spin_threshold=QSpinBox();
         self.spin_threshold.setRange(0,255);
-        self.spin_threshold.setValue(25);
+        self.spin_threshold.setValue(33);
         self.spin_threshold.valueChanged.connect(self.on_spin_threshold_changed);
         #pushbutton
         self.pushbutton=QPushButton("Start");
@@ -80,6 +86,7 @@ class Form(QWidget):
         self.vbox.addWidget(self.label_outdir)
         self.vbox.addLayout(self.hbox1)
         self.vbox.addWidget(self.label_sources)
+        self.vbox.addWidget(self.spin_inisource)
         self.vbox.addWidget(self.spin_endsource)
         self.vbox.addWidget(self.separatorLine1)
         self.vbox.addWidget(self.label_numofimg)
@@ -127,6 +134,14 @@ class Form(QWidget):
         self.move(300, 150)
         self.show()
     
+    ##################################
+    def on_lineedit_outdir_changed(self):
+        self.obj_worker.setOutputDir(self.lineedit_outdir.text());
+        print("Lineedit outdir changed to",self.obj_worker.getOutputDir());
+    ##################################
+    def on_spin_inisource_changed(self):
+        self.obj_worker.setStartSource(self.spin_inisource.value());
+        print("SpinButton inisource changed to",self.obj_worker.getStartSource());
     ##################################
     def on_spin_endsource_changed(self):
         self.obj_worker.setEndSource(self.spin_endsource.value());

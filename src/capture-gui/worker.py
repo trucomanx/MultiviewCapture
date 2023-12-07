@@ -20,6 +20,7 @@ class Worker(QObject):
                                         Directory=Directory);
         self.start_source = start_source;
         self.end_source   = end_source;
+
     
     @pyqtSlot()
     def procCounter(self): # A slot takes no params
@@ -45,6 +46,12 @@ class Worker(QObject):
         self.cvobj.count=0;
         print("self.cvobj.stop_opencv()");
     
+    def setStartSource(self,Nel):
+        self.start_source=Nel;
+        
+    def getStartSource(self):
+        return self.start_source;
+        
     def setEndSource(self,Nel):
         self.end_source=Nel;
         
@@ -59,6 +66,9 @@ class Worker(QObject):
         
     def setOutputDir(self,Directory):
         self.cvobj.Directory=Directory;
+        
+    def getOutputDir(self):
+        return self.cvobj.Directory;
         
     def setUmbral(self,Umbral):
         self.cvobj.Umbral=Umbral;
