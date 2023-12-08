@@ -14,6 +14,7 @@ def face_extrator_mediapipe(face_detection,frame0,box_old=None):
     results = face_detection.process(cv2.cvtColor(frame0, cv2.COLOR_BGR2RGB))
     
     out_roi=np.copy(frame0);
+    box_curr=None;
     if results.detections:
         for detection in results.detections:
             #print("detection",detection)
@@ -25,7 +26,12 @@ def face_extrator_mediapipe(face_detection,frame0,box_old=None):
             dx=int(detection.location_data.relative_bounding_box.width*width);
             dy=int(detection.location_data.relative_bounding_box.height*height);
             
-            box_curr=(x0,min(x0+dx, frame0.shape[1]),y0,min(y0+dy,frame0.shape[0]));
+            box_curr=[x0,min(x0+dx, frame0.shape[1]),y0,min(y0+dy,frame0.shape[0])];
+            if box_old!=None:
+                box_curr[0]=min(box_curr[0],box_old[0]);
+                box_curr[1]=max(box_curr[1],box_old[1]);
+                box_curr[2]=min(box_curr[2],box_old[2]);
+                box_curr[3]=max(box_curr[3],box_old[3]);
             
             out_roi=np.copy(frame0[box_curr[2]:box_curr[3], box_curr[0]:box_curr[1]]);
             out_roi = cv2.resize(out_roi, (100,100), interpolation = cv2.INTER_AREA);
@@ -34,7 +40,7 @@ def face_extrator_mediapipe(face_detection,frame0,box_old=None):
             #cv2.imwrite('face' + str(box_curr) + '_roi.png', out_roi)
             #cv2.imwrite('face' + str(box_curr) + '_frame.png', frame0)
             break;
-    return out_roi;
+    return out_roi, box_curr;
 ################################################################################
 def face_detector_retinaface():
     from retinaface.pre_trained_models import get_model
@@ -75,7 +81,7 @@ class FramesAnalizer:
 
     def __init__(self):
         self.frame1 = np.zeros((0, 0, 0));
-        
+        self.box_old = None;
         ##############################################
         self.face_detector=face_detector_mediapipe();
         #self.face_detector=face_detector_opencv();
@@ -84,7 +90,7 @@ class FramesAnalizer:
     
     def AnalyzeNewFrame(self,frame0,Umbral):
         ##############################################
-        frame0=face_extrator_mediapipe(self.face_detector,frame0);
+        frame0, self.box_old=face_extrator_mediapipe(self.face_detector,frame0,box_old=self.box_old);
         ##frame0=face_extrator_opencv(self.face_detector,frame0);
         #frame0=face_extrator_retinaface(self.face_detector,frame0);
         ##############################################

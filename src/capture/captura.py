@@ -13,7 +13,7 @@ import cv2
 MaxNumOfImages=15;
 start_source=0;
 end_source=9;
-Umbral=19;
+Umbral=20;
 output_dir='/media/fernando/INFORMATION/TMP'
 
 ############################################################################
