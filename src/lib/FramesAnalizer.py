@@ -9,9 +9,11 @@ def face_detector_mediapipe():
     face_detection=mp_face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.5);
     return face_detection;
     
-def face_extrator_mediapipe(face_detection,frame0):
+def face_extrator_mediapipe(face_detection,frame0,box_old=None):
     import mediapipe as mp
     results = face_detection.process(cv2.cvtColor(frame0, cv2.COLOR_BGR2RGB))
+    
+    out_roi=np.copy(frame0);
     if results.detections:
         for detection in results.detections:
             #print("detection",detection)
@@ -19,14 +21,20 @@ def face_extrator_mediapipe(face_detection,frame0):
             x0=int(detection.location_data.relative_bounding_box.xmin*width);
             x0=max(x0, 0);x0=min(x0, frame0.shape[1]);
             y0=int(detection.location_data.relative_bounding_box.ymin*height);
-            y0=max(y0, 0);x0=min(y0, frame0.shape[0]);
+            y0=max(y0, 0);y0=min(y0, frame0.shape[0]);
             dx=int(detection.location_data.relative_bounding_box.width*width);
             dy=int(detection.location_data.relative_bounding_box.height*height);
-            frame0=frame0[y0:(y0+dy), x0:(x0+dx)];
-            frame0 = cv2.resize(frame0, (100,100), interpolation = cv2.INTER_AREA)
-            #cv2.imwrite('face' + str(time.time_ns()) + '.png', frame0)
+            
+            box_curr=(x0,min(x0+dx, frame0.shape[1]),y0,min(y0+dy,frame0.shape[0]));
+            
+            out_roi=np.copy(frame0[box_curr[2]:box_curr[3], box_curr[0]:box_curr[1]]);
+            out_roi = cv2.resize(out_roi, (100,100), interpolation = cv2.INTER_AREA);
+            
+            #cv2.imwrite('face' + str(time.time_ns()) + '.png', out_roi)
+            #cv2.imwrite('face' + str(box_curr) + '_roi.png', out_roi)
+            #cv2.imwrite('face' + str(box_curr) + '_frame.png', frame0)
             break;
-    return frame0;
+    return out_roi;
 ################################################################################
 def face_detector_retinaface():
     from retinaface.pre_trained_models import get_model

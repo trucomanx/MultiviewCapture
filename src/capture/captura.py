@@ -10,10 +10,10 @@ import FramesAnalizer as FA
 
 import cv2
 
-MaxNumOfImages=1000;
-start_source=1;
+MaxNumOfImages=15;
+start_source=0;
 end_source=9;
-Umbral=33;
+Umbral=19;
 output_dir='/media/fernando/INFORMATION/TMP'
 
 ############################################################################
