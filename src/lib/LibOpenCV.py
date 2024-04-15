@@ -28,6 +28,11 @@ class OpenCvClass:
             state=False;
             for ID in range(len(vids)):
                 if vids[ID].isOpened():
+                    #1280x720,960x540 #1024x576
+                    vids[ID].set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+                    vids[ID].set(cv2.CAP_PROP_FRAME_HEIGHT,720)
+                    vids[ID].set(cv2.CAP_PROP_AUTOFOCUS, 0) # turn the autofocus off
+                    vids[ID].set(cv2.CAP_PROP_BRIGHTNESS,180)
                     ret[ID], frame[ID] = vids[ID].read();
                     if imshow:
                         cv2.imshow('frame'+str(Sources[ID]), frame[ID]);

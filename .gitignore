@@ -1,4 +1,10 @@
 src/__pycache__
 src/lib/__pycache__
+src/lib/*.pyc
 src/capture-gui/__pycache__
-/src/capture-gui/.goutputstream-J3G0F2
+src/capture-gui/.goutputstream-*
+src/analyzer-cmd/cnn_emotion4
+src/analyzer-cmd/OpenPifPafTools
+src/analyzer-cmd/VideoImageTools
+src/analyzer-cmd/__pycache__
+

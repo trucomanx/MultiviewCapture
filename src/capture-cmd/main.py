@@ -11,9 +11,9 @@ import FramesAnalizer as FA
 import cv2
 
 MaxNumOfImages=15;
-start_source=0;
+start_source=1;
 end_source=9;
-Umbral=20;
+Umbral=3000;
 output_dir='/media/fernando/INFORMATION/TMP'
 
 ############################################################################
@@ -28,7 +28,10 @@ while(True):
     state=False;
     for ID in range(len(vids)):
         if vids[ID].isOpened():
-            
+            #1280x720,960x540 #1024x576
+            #vids[ID].set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+            #vids[ID].set(cv2.CAP_PROP_FRAME_HEIGHT,720)
+            vids[ID].set(cv2.CAP_PROP_AUTOFOCUS, 0) # turn the autofocus off
             ret[ID], frame[ID] = vids[ID].read();
             if ret[ID]:
                 cv2.imshow('frame'+str(Sources[ID]), frame[ID]);

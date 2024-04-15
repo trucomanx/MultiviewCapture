@@ -23,7 +23,7 @@ import worker
 
 class Form(QWidget):
 
-    def __init__(self):
+    def __init__(self):                                                                                                                                     
         super().__init__()
         
         # window
@@ -43,12 +43,12 @@ class Form(QWidget):
         #spin_ini
         self.spin_inisource=QSpinBox();
         self.spin_inisource.setRange(0,10);
-        self.spin_inisource.setValue(0);
+        self.spin_inisource.setValue(1);
         self.spin_inisource.valueChanged.connect(self.on_spin_inisource_changed);
         #spin_end
         self.spin_endsource=QSpinBox();
         self.spin_endsource.setRange(0,10);
-        self.spin_endsource.setValue(3);
+        self.spin_endsource.setValue(9);
         self.spin_endsource.valueChanged.connect(self.on_spin_endsource_changed);
         #separatorline
         self.separatorLine1 = QFrame()
@@ -59,14 +59,14 @@ class Form(QWidget):
         #spin_numofimg
         self.spin_numofimg=QSpinBox();
         self.spin_numofimg.setRange(0,100000);
-        self.spin_numofimg.setValue(15);
+        self.spin_numofimg.setValue(400);
         self.spin_numofimg.valueChanged.connect(self.on_spin_numofimg_changed);
         #label_threshold
         self.label_threshold=QLabel("Threshold:");
         #spin_threshold
         self.spin_threshold=QSpinBox();
         self.spin_threshold.setRange(0,255);
-        self.spin_threshold.setValue(33);
+        self.spin_threshold.setValue(25);
         self.spin_threshold.valueChanged.connect(self.on_spin_threshold_changed);
         #pushbutton
         self.pushbutton=QPushButton("Start");
