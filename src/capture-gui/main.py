@@ -1,4 +1,14 @@
 # main.py
+
+import os
+
+# Forçar o uso do X11
+#os.environ["QT_QPA_PLATFORM"] = "xcb"
+os.environ["QT_QPA_PLATFORM"] = "dxcb"
+
+# Se estiver no Wayland, tente esta opção em vez da anterior:
+#os.environ["QT_QPA_PLATFORM"] = "wayland"
+
 from PyQt5.QtCore import QThread
 from PyQt5.QtCore import QDir
 

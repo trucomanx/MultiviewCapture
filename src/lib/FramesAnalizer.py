@@ -1,16 +1,15 @@
 import numpy as np
 import cv2
 import time
+import mediapipe as mp
 
 ################################################################################
 def face_detector_mediapipe():
-    import mediapipe as mp
     mp_face_detection = mp.solutions.face_detection
     face_detection=mp_face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.5);
     return face_detection;
     
 def face_extrator_mediapipe(face_detection,frame0,box_old=None):
-    import mediapipe as mp
     results = face_detection.process(cv2.cvtColor(frame0, cv2.COLOR_BGR2RGB))
     
     out_roi=np.copy(frame0);
